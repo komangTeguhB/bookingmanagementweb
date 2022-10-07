@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Sessions Booked";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sessions Booked Management</h2>
+<br />
+<div ng-app="sessionsBookedModule" id="body">
+    <div ng-controller="sessionsBookedController">
+        <div class="table-responsive">
+            <input ng-model="searchText" class="form-control" style="width:200px;margin-bottom: 10px;" placeholder="Search">
+            <table ng-cloak>
+                <thead>
+                    <tr>
+                        <th style="display: none;">ID</th>
+                        <th>No</th>
+                        <th>Client</th>
+                        <th>Staff</th>
+                        <th>Session Date</th>
+                        <th>Session Type</th>
+                        <th>Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in filtered =  (filterList | filter:searchText) | start: (pagination.currentPage - 1) * pagination.numPerPage | limitTo: pagination.numPerPage">
+                        <td hidden="hidden">{{item.Id}}</td>
+                        <td>{{$index + 1}}</td>
+                        <td>{{item.ClientData.Name}}</td> 
+                        <td>{{item.StaffSessionData.StaffData.Name}}</td>
+                        <td>{{item.StaffSessionData.Date | date:'shortDate'}} {{item.StaffSessionData.Time}}</td>
+                        <td>{{item.StaffSessionData.ConsultationTypeData.TypeName}} - {{item.StaffSessionData.ConsultationTypeData.Duration}} minutes</td>
+                        <td ng-if="item.IsActive == 1">Yes</td>
+                        <td ng-if="item.IsActive == 0">No</td>
+                        <td>
+                            <button ng-model="$scope.SBooked"
+                                    ng-click="edit(item)">
+                                Edit
+                            </button>
+                            <button ng-click="delete(item)" class="button-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <hr />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div uib-pagination total-items="filtered.length" ng-model="pagination.currentPage"
+                 max-size="5" boundary-links="true" items-per-page="pagination.numPerPage"
+                 class="pagination-sm" style="padding-left: 450px;">
+            </div>
+        </div>
+        <div style="border-top: solid 2px #282828; width: 670px; height: 10px"> </div>
+
+        <div ng-show="SBooked.Id != '' ">
+            <div>
+                <h2>Update Booked Session</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="SBooked.Id" />
+            </div>
+            <div>
+                <label for="Client">Client</label>
+                <select data-ng-model="SBooked.Client" class="form-control">
+                    <option ng-repeat="x in clients" value="{{x.Id}}" ng-selected="SBooked.Client == x.Id">{{x.Name}}</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="Sessions">Staff Sessions</label>
+                <select data-ng-model="SBooked.StaffSession"  ng-change="saveSSValue(SBooked.StaffSession)"  class="form-control">
+                    <option ng-repeat="x in staffSessions" value="{{x.Id}}" ng-selected="SBooked.StaffSession == x.Id">{{x.Date | date: 'shortDate'}} | {{x.Time}} | {{x.StaffData.Name}} | {{x.ConsultationTypeData.TypeName}} | {{x.ConsultationTypeData.Duration}} min</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="active">Active</label>
+                <select data-ng-model="SBooked.IsActive" class="form-control">
+                    <option ng-repeat="x in ActiveValues" value="{{x.value}}" ng-selected="SBooked.IsActive == x.value">{{x.label}}</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="update()">Update</button>
+                <button data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+        <div ng-hide="SBooked.Id != '' ">
+            <div>
+                <h2>Add New Booked Session</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="StaffSession.Id" />
+            </div>
+            <div>
+                <label for="Client">Client</label>
+                <select data-ng-model="SBooked.Client" class="form-control">
+                    <option ng-repeat="x in clients" value="{{x.Id}}" ng-selected="SBooked.Client == x.Id">{{x.Name}}</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="Sessions">Staff Sessions</label>
+                <select data-ng-model="SBooked.StaffSession" ng-change="saveSSValue(SBooked.StaffSession)" class="form-control">
+                    <option ng-repeat="x in staffSessions" value="{{x.Id}}" ng-selected="SBooked.StaffSession == x.Id">{{x.Date | date: 'shortDate'}} | {{x.Time}} | {{x.StaffData.Name}} | {{x.ConsultationTypeData.TypeName}} | {{x.ConsultationTypeData.Duration}} min</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="active">Active</label>
+                <select data-ng-model="SBooked.IsActive" class="form-control">
+                    <option ng-repeat="x in ActiveValues" value="{{x.value}}">{{x.label}}</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="save()">Save</button>
+                <button data-ng-click="clear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

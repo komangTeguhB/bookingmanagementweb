@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Staff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Staff Management</h2>
+<br />
+<div ng-app="staffModule" id="body">
+    <div ng-controller="staffController">
+        <div class="table-responsive">
+            <input ng-model="searchText" class="form-control" style="width:200px;margin-bottom: 10px;" placeholder="Search">
+            <table ng-cloak>
+                <thead>
+                    <tr>
+                        <th style="display: none;">ID</th>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in filtered =  (filterList | filter:searchText) | start: (pagination.currentPage - 1) * pagination.numPerPage | limitTo: pagination.numPerPage">
+                        <td hidden="hidden">{{item.Id}}</td>
+                        <td>{{$index + 1}}</td>
+                        <td>{{item.Name}}</td>
+                        <td>{{item.Email}}</td>
+                        <td>0{{item.Phone}}</td>
+                        <td>{{item.Address}}</td>
+                        <td ng-if="item.Status == 1">Yes</td>
+                        <td ng-if="item.Status == 0">No</td>
+                        <td>
+                            <button ng-model="$scope.Staff"
+                                    ng-click="edit(item)">
+                                Edit
+                            </button>
+                            <button ng-click="delete(item)"  class="button-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <hr />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div uib-pagination total-items="filtered.length" ng-model="pagination.currentPage"
+                 max-size="5" boundary-links="true" items-per-page="pagination.numPerPage"
+                 class="pagination-sm">
+            </div>
+        </div>
+        <div style="border-top: solid 2px #282828; width: 430px; height: 10px"> </div>
+
+        <div ng-show="Staff.Id != '' ">
+            <div>
+                <h2>Update Staff</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="Staff.Id" />
+            </div>
+            <div>
+                <label for="name">Name</label>
+                <input type="text" class="form-control" data-ng-model="Staff.Name" />
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="text" class="form-control" data-ng-model="Staff.Email" />
+            </div>
+
+            <div>
+                <label for="address">Address</label>
+                <textarea name="address" class="form-control" data-ng-model="Staff.Address"></textarea>
+            </div>
+            <div>
+                <label for="phone">Phone</label>
+                <input type="number" class="form-control" data-ng-model="Staff.Phone" />
+            </div>
+            <div>
+                <label for="active">Active</label>
+                <select data-ng-model="Staff.Status" class="form-control">
+                    <option ng-repeat="x in ActiveValues" value="{{x.value}}" ng-selected="Staff.Status == x.value">{{x.label}}</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="update()">Update</button>
+                <button data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+        <div ng-hide="Staff.Id != '' ">
+            <div>
+                <h2>Add New Staff</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="Staff.Id" />
+            </div>
+            <div>
+                <label for="name">Name</label>
+                <input type="text" class="form-control" placeholder="Full name" data-ng-model="Staff.Name" />
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="text" class="form-control" placeholder="Email address" data-ng-model="Staff.Email" />
+            </div>
+
+            <div>
+                <label for="address">Address</label>
+                <textarea name="address" class="form-control" placeholder="Address" data-ng-model="Staff.Address"></textarea>
+            </div>
+            <div>
+                <label for="phone">Phone</label>
+                <input type="number" class="form-control" placeholder="Phone" data-ng-model="Staff.Phone" />
+            </div>
+            <div>
+                <label for="phone">Active</label>
+                <select data-ng-model="Staff.Status" class="form-control">
+                    <option ng-repeat="x in ActiveValues" value="{{x.value}}">{{x.label}}</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="save()">Save</button>
+                <button data-ng-click="clear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+

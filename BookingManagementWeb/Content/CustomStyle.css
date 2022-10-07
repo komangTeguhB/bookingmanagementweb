@@ -1,0 +1,82 @@
+﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+body {
+            margin: 20px;
+            font-family: Source Sans Pro;
+        }
+
+.navbar-inverse-custom {
+  background-color: #294061;
+  border-color: #080808;
+}
+
+.header-link-fontcolor {
+  color: white;
+  text-decoration: none;
+}
+
+.button-delete {
+    color: #696969;
+    border: solid 1px #d1d1d1;
+    background: #d1d1d1;
+    border-radius: 5px;
+}
+
+
+        label {
+            width: 150px;
+            display: inline-block;
+        }
+
+        button {
+            display: inline-block;
+            outline: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            padding: .4em 1.1em .4em;
+            color: #fef4e9;
+            border: solid 1px #18bd85;
+            background: #18bd85;
+            border-radius: 5px;
+            width: 100px;
+        }
+
+            button:hover {
+                text-decoration: none;
+                background: #808080;
+                border: solid 1px #000;
+            }
+
+        table {
+            padding-top: 1em;
+        }
+
+        thead, tfoot {
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: .1em .5em;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+            td li, td ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            td li {
+                display: inline;
+            }
+
+                td li::after {
+                    content: ',';
+                }
+
+                td li:last-child::after {
+                    content: '';
+                }

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="~/Content/Images/android-touch.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title | EAP Services Booking Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse-custom navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("Index", "Home")" title="EAP" class="navbar-brand">
+                    <img alt="EAPIcon" src="@Url.Content("~/Content/Images/LOGO-EAP.png")">
+                </a>
+                @*@Html.ActionLink("Booking System Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand header-link-fontcolor" })*@
+            </div>
+            <div class="navbar-collapse collapse" style="margin: 20px 0px 0px 150px">
+                <ul class="nav navbar-nav">
+                    @*<li><a href="@Url.Action("Index", "Home")" class="header-link-fontcolor">Home</a></li>*@
+                    <li><a href="@Url.Action("SessionsBooked", "Home")" class="header-link-fontcolor">Create Appointment</a></li>
+                    <li><a href="@Url.Action("Client", "Home")" class="header-link-fontcolor">Client</a></li>
+                    <li><a href="@Url.Action("Staff", "Home")" class="header-link-fontcolor">Staff</a></li>
+                    <li><a href="@Url.Action("ConsultationType", "Home")" class="header-link-fontcolor">Consultation Type</a></li>
+                    <li><a href="@Url.Action("StaffSession", "Home")" class="header-link-fontcolor">Staff Session</a></li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="margin-top: 20px;">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - EAP Services</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Log in";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row"  ng-app="authModule">
+    <div class="col-md-8" ng-controller="logincontroller">
+        
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                <div>
+                    <label for="Email" >Email</label>
+                    <input type="text"  class="form-control" data-ng-model="userLoginEmail" />
+                    
+                </div>
+                <div style="margin-bottom:20px;" >
+                    <label for="Password" >Password</label>
+                    <input type="text"  class="form-control" data-ng-model="userLoginPassword" />
+                </div>
+                <div >
+                        <button data-ng-click="login()" class="btn btn-default">Log in</button>
+                </div>
+                <br />
+                <div class="form-group">
+                    <p style="float: left">
+                        @Html.ActionLink("Register as a new user", "Register")
+                    </p>
+                </div>
+            @* Enable this once you have account confirmation enabled for password reset functionality
+            <p>
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+            </p>*@
+
+        </div>
+   
+</div>

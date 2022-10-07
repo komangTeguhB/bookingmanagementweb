@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Consultation Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Consultation Type Management</h2>
+<br />
+<div ng-app="consultationTypeModule" id="body">
+    <div ng-controller="consultationTypeController">
+        <div class="table-responsive">
+            <input ng-model="searchText" class="form-control" style="width:200px;margin-bottom: 10px;" placeholder="Search">
+            <table ng-cloak>
+                <thead>
+                    <tr>
+                        <th style="display: none;">ID</th>
+                        <th>No</th>
+                        <th>Type Name</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in filtered =  (filterList | filter:searchText) | start: (pagination.currentPage - 1) * pagination.numPerPage | limitTo: pagination.numPerPage">
+                        <td hidden="hidden">{{item.Id}}</td>
+                        <td>{{$index + 1}}</td>
+                        <td>{{item.TypeName}}</td>
+                        <td>{{item.Duration}} Minutes</td>
+                        <td>
+                            <button ng-model="$scope.CTypes"
+                                    ng-click="edit(item)">
+                                Edit
+                            </button>
+                            <button ng-click="delete(item)"  class="button-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <hr />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div uib-pagination total-items="filtered.length" ng-model="pagination.currentPage"
+                 max-size="5" boundary-links="true" items-per-page="pagination.numPerPage"
+                 class="pagination-sm">
+            </div>
+        </div>
+        <div style="border-top: solid 2px #282828; width: 430px; height: 10px"> </div>
+
+        <div ng-show="CTypes.Id != '' ">
+            <div>
+                <h2>Update Consultation Type</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="CTypes.Id" />
+            </div>
+            <div>
+                <label for="TypeName">Type Name</label>
+                <input type="text" class="form-control" data-ng-model="CTypes.TypeName" />
+            </div>
+
+            <div>
+                <label for="Duration">Duration (Minutes)</label>
+                <input type="number" class="form-control" data-ng-model="CTypes.Duration" />
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="update()">Update</button>
+                <button data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+        <div ng-hide="CTypes.Id != '' ">
+            <div>
+                <h2>Add New Consultation Type</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="CTypes.Id" />
+            </div>
+            <div>
+                <label for="TypeName">Type Name</label>
+                <input type="text" class="form-control" placeholder="Type name" data-ng-model="CTypes.TypeName" />
+            </div>
+            <div>
+                <label for="Duration">Duration (Minutes)</label>
+                <input type="number" class="form-control" placeholder="Duration" data-ng-model="CTypes.Duration" />
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="save()">Save</button>
+                <button data-ng-click="clear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

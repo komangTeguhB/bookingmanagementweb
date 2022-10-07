@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Staff Session";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Staff Session Management</h2>
+<br />
+<div ng-app="staffSessionModule" id="body">
+    <div ng-controller="staffSessionController">
+        <div class="table-responsive">
+            <input ng-model="searchText" class="form-control" style="width:200px;margin-bottom: 10px;" placeholder="Search">
+            <table ng-cloak>
+                <thead>
+                    <tr>
+                        <th style="display: none;">ID</th>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>ConsultationType</th>
+                        <th>Staff</th>
+                        <th>Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in filtered =  (filterList | filter:searchText) | start: (pagination.currentPage - 1) * pagination.numPerPage | limitTo: pagination.numPerPage">
+                        <td hidden="hidden">{{item.Id}}</td>
+                        <td>{{$index + 1}}</td>
+                        <td>{{item.Date |  date:'dd-MMM-yyyy' }}</td>
+                        <td>{{item.Time}}</td>
+                        <td>{{item.ConsultationTypeData.TypeName}}</td>
+                        <td>{{item.StaffData.Name}}</td>
+                        <td ng-if="item.IsActive == 1">Yes</td>
+                        <td ng-if="item.IsActive == 0">No</td>
+                        <td>
+                            <button ng-model="$scope.StaffSession"
+                                    ng-click="edit(item)">
+                                Edit
+                            </button>
+                            <button ng-click="delete(item)" class="button-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <hr />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div uib-pagination total-items="filtered.length" ng-model="pagination.currentPage"
+                 max-size="5" boundary-links="true" items-per-page="pagination.numPerPage"
+                 class="pagination-sm" style="padding-left: 450px;">
+            </div>
+        </div>
+        <div style="border-top: solid 2px #282828; width: 670px; height: 10px"> </div>
+
+        <div ng-show="StaffSession.Id != '' ">
+            <div>
+                <h2>Update Staff Session</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="StaffSession.Id" />
+            </div>
+            <div>
+                <label for="date">Date</label>
+                <p class="input-group" style="width: 320px;">
+                    <input readonly type="text" class="form-control" uib-datepicker-popup="{{format}}" data-ng-model="StaffSession.Date" is-open="popup1.opened" ng-model-options="{timezone:'UTC/GMT'}" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" data-ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <pre class="alert alert-info" style="width: 20%;">Current date is: {{dateTemp | date:'shortDate'}}</pre>
+                </p>
+            </div>
+          
+            <div>
+                <label for="time">Time</label>
+                <div uib-timepicker data-ng-model="timeTemp" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
+                <pre class="alert alert-info" style="width: 20%;">Time is: {{timeTemp | date:'shortTime' }}</pre>
+            </div>
+
+            <div>
+                <label for="ConsultationType">Consultation Type</label>
+                <select data-ng-model="StaffSession.ConsultationType" class="form-control">
+                    <option ng-repeat="x in consulTypes" value="{{x.Id}}" ng-selected="StaffSession.ConsultationType == x.Id">{{x.TypeName}} {{x.Duration}} Minutes</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="Staff">Staff</label>
+                <select data-ng-model="StaffSession.Staff" class="form-control">
+                    <option ng-repeat="x in staffs" value="{{x.Id}}" ng-selected="StaffSession.Staff == x.Id">{{x.Name}}</option>
+                </select>
+            </div>
+
+           <div>
+                <label for="active">Active</label>
+                <select data-ng-model="StaffSession.IsActive" class="form-control">
+                    <option ng-repeat="x in ActiveValues" value="{{x.value}}" ng-selected="StaffSession.IsActive == x.value">{{x.label}}</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="update()">Update</button>
+                <button data-ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+
+        <div ng-hide="StaffSession.Id != '' ">
+            <div>
+                <h2>Add New Staff Session</h2>
+            </div>
+            <div hidden="hidden">
+                <label for="id">Id</label>
+                <input type="text" class="form-control" data-ng-model="StaffSession.Id" />
+            </div>
+            <div>
+                <label for="date">Date</label>
+                <p class="input-group" style="width: 320px;">
+                    <input type="text" readonly class="form-control" uib-datepicker-popup="{{format}}" ng-model-options="{timezone:'UTC/GMT'}" data-ng-model="StaffSession.Date" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" data-ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+
+            <div>
+                <label for="time">Time</label>
+                <div uib-timepicker data-ng-model="timeTemp" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
+                <pre class="alert alert-info" style="width: 20%;">Time is: {{timeTemp | date:'shortTime' }}</pre>
+            </div>
+
+            <div>
+                <label for="address">Consultation Type</label>
+                <select data-ng-model="StaffSession.ConsultationType" class="form-control">
+                    <option ng-repeat="x in consulTypes" value="{{x.Id}}">{{x.TypeName}} {{x.Duration}} Minutes</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="address">Staff</label>
+                <select data-ng-model="StaffSession.Staff" class="form-control">
+                    <option ng-repeat="x in staffs" value="{{x.Id}}">{{x.Name}}</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="active">Active</label>
+                <select data-ng-model="StaffSession.IsActive" class="form-control">
+                    <option ng-repeat="x in ActiveValues" value="{{x.value}}">{{x.label}}</option>
+                </select>
+            </div>
+            <br />
+            <div>
+                <button data-ng-click="save()">Save</button>
+                <button data-ng-click="clear()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
